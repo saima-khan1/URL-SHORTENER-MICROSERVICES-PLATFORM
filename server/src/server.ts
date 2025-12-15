@@ -1,6 +1,7 @@
 import Fastify from "fastify";
 import cors from "@fastify/cors";
 import dotenv from "dotenv";
+import pool from "./db.js";
 
 dotenv.config();
 
@@ -10,6 +11,11 @@ const fastify = Fastify({
 
 await fastify.register(cors, {
   origin: true,
+});
+
+fastify.get("/test-db", async () => {
+  const res = await pool.query("SELECT NOW()");
+  return { time: res.rows[0].now };
 });
 
 fastify.get("/", async function handler(request, reply) {
