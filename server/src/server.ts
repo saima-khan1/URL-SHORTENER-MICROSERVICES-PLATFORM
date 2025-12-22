@@ -2,6 +2,7 @@ import Fastify from "fastify";
 import cors from "@fastify/cors";
 import dotenv from "dotenv";
 import pool from "./db.js";
+import { urlRoutes } from "./routes/url.routes.js";
 
 dotenv.config();
 
@@ -12,6 +13,8 @@ const fastify = Fastify({
 await fastify.register(cors, {
   origin: true,
 });
+
+fastify.register(urlRoutes);
 
 fastify.get("/test-db", async () => {
   const res = await pool.query("SELECT NOW()");
